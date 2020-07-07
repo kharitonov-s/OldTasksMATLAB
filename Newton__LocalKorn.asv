@@ -1,0 +1,49 @@
+function Newton__LocalKorn()
+function y = goalfunc(x)
+    y=x^2 + 4*sin(x)-2;
+   %y=sin(x)+x^3-2;
+end
+    function y = dif(x)
+y=2*x+4*cos(x);
+    end
+
+% x^2 + 4 sin x = 2; e=0.0001; !!!первый корень х1=0.48 второй х2=-2.26!!!
+a=0;    % a - начальная точка отрезка
+b=2; % b - конечная точка отрезка 
+%to do vichislit' znach funkcii v tochkah x = a + k*h
+N=20; %kol-vo chastey na kotorie rezdelim otrezok [a,b]
+h=(b-a)/N
+flag=0;
+s=0;
+e=0.0001
+while flag==0
+    for k=0:1:N
+        y1=goalfunc(a+k*h);
+        y2=goalfunc(a+(k+1)*h);
+        if(y1*y2)<0
+            flag=1;
+            x1=a+k*h 
+            x2=a+(k+1)*h
+            break
+        end
+    end
+    N=N*2;
+    h=(b-a)/N;
+end
+
+root=x1-y1/dif(x1);
+next_root=root-y1/dif(root);
+%Newton
+while (abs(root-next_root)>e)%stop case
+    %dihotomia for out of localrange 
+    if (goalfunc(root)*goalfunc(next_root)>=0)
+        next_root=(next_root+root)/2;
+    else
+    root=next_root;
+    next_root=root-y1/dif(root); %Newton
+    end
+end
+ans=next_root
+end
+
+
